@@ -387,7 +387,7 @@ public class OfbizUtils {
         Controller controller = controllerManager.getController((XmlFile) event.getXmlElement().getContainingFile().getContainingFile());
         Set<String> names = new HashSet<String>();
         for (Handler handler : controller.getAllHandlers()) {
-            if(handler.getType().equals(type)){
+            if(handler.getType().getStringValue().equals(type)){
                 names.add(handler.getName().getStringValue());
             }
 
@@ -496,8 +496,9 @@ public class OfbizUtils {
             return s;
         }
         s = s.trim();
-        if (s.endsWith(IDEA_POSTFIX)) {
-            return s.substring(0, s.length() - IDEA_POSTFIX.length());
+        int pos = s.indexOf(IDEA_POSTFIX);
+        if (pos >=0) {
+            return s.substring(0, pos);
         }
         return s;
     }

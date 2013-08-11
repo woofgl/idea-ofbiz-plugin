@@ -69,6 +69,9 @@ public class ControllerReferenceContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(xmlAttribute().withLocalName("page").
                 withSuperParent(1, withDom(domElement(ViewMap.class))),
                 viewMapPageReferenceProvider);
+        registrar.registerReferenceProvider(xmlAttribute().withLocalName("type").
+                withSuperParent(1, withDom(domElement(ViewMap.class))),
+                viewMapPageReferenceProvider);
 
         registrar.registerReferenceProvider(xmlAttribute().withLocalName("location").
                 withSuperParent(1, withDom(domElement(Include.class))),new PsiReferenceProvider() {

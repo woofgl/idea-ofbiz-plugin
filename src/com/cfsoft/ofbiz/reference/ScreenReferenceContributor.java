@@ -65,7 +65,7 @@ public class ScreenReferenceContributor extends PsiReferenceContributor {
             @NotNull
             @Override
             public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {
-                return new PsiReference[]{new ComponentUrlReference((XmlAttribute) psiElement, Screen.class)};
+                return new PsiReference[]{new ComponentUrlReference((XmlAttribute) psiElement, null)};
             }
         });
     }

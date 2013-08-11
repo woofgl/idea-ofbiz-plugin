@@ -4,7 +4,10 @@ import com.cfsoft.ofbiz.OfbizUtils;
 import com.cfsoft.ofbiz.dom.component.ComponentManager;
 import com.cfsoft.ofbiz.dom.component.ComponentUrl;
 import com.cfsoft.ofbiz.dom.component.api.Component;
+import com.cfsoft.ofbiz.dom.controller.api.Controller;
+import com.cfsoft.ofbiz.dom.controller.api.Handler;
 import com.cfsoft.ofbiz.dom.controller.api.ViewMap;
+import com.cfsoft.ofbiz.dom.controller.model.ControllerManager;
 import com.cfsoft.ofbiz.dom.screen.api.Screen;
 import com.cfsoft.ofbiz.dom.screen.api.Screens;
 import com.cfsoft.ofbiz.facet.OfbizFacet;
@@ -21,13 +24,18 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.xml.DomUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class ViewMapReference extends PsiReferenceBase<XmlAttribute> {
 
+    private final String localName;
+
     public ViewMapReference(@NotNull final XmlAttribute xmlTag) {
         super(xmlTag, false);
+        this.localName = myElement.getLocalName();
     }
 
     @SuppressWarnings({"unchecked"})
@@ -36,35 +44,48 @@ public class ViewMapReference extends PsiReferenceBase<XmlAttribute> {
             return myElement;
         }
         ViewMap viewmap = (ViewMap) DomUtil.getDomElement(myElement.getParent());
-        String page = viewmap.getPage().getValue();
-        if (page != null && page.trim().length() > 0) {
-            final ComponentUrl componentUrl = new ComponentUrl(page.trim());
-            PsiFile psiFile = OfbizUtils.findPsiFileByComponentUrl(myElement, componentUrl);
-            if (psiFile != null) {
-                if (componentUrl.getTag() != null
-                        && psiFile instanceof XmlFile) {
-                    XmlFile xmlFile = (XmlFile) psiFile;
-                    XmlTag rootag = xmlFile.getRootTag();
-                    if (rootag.getLocalName().equals("screens") || rootag.getLocalName().equals("forms")) {
-                        XmlTag[] xmltags = xmlFile.getRootTag().getSubTags();
-                        List<XmlTag> list = ContainerUtil.filter(xmltags, new Condition<XmlTag>() {
-                            @Override
-                            public boolean value(XmlTag xmlTag) {
-                                return xmlTag.getLocalName().equals("screen") || xmlTag.getLocalName().equals("form");
-                            }
-                        });
-                        return ContainerUtil.find(list, new Condition<XmlTag>() {
-                            @Override
-                            public boolean value(XmlTag xmlTag) {
-                                return componentUrl.getTag().trim().equals(xmlTag.getAttributeValue("name"));
-                            }
-                        });
+        if (localName.equals("type")) {
+            ControllerManager controllerManager = ControllerManager.getInstance(myElement.getProject());
+            Controller controller = controllerManager.getController((XmlFile) myElement.getContainingFile().getContainingFile());
+//            Set<String> names = new HashSet<String>();
+            for (Handler handler : controller.getAllHandlers()) {
+                if (handler.getType().getStringValue().equals("view")) {
+                    if (handler.getName().getStringValue().equals(viewmap.getType().getStringValue())) {
+                        return handler.getXmlElement();
+                    }
+                }
+            }
+        } else if (localName.equals("page")) {
+            String page = viewmap.getPage().getValue();
+            if (page != null && page.trim().length() > 0) {
+                final ComponentUrl componentUrl = new ComponentUrl(page.trim());
+                PsiFile psiFile = OfbizUtils.findPsiFileByComponentUrl(myElement, componentUrl);
+                if (psiFile != null) {
+                    if (componentUrl.getTag() != null
+                            && psiFile instanceof XmlFile) {
+                        XmlFile xmlFile = (XmlFile) psiFile;
+                        XmlTag rootag = xmlFile.getRootTag();
+                        if (rootag.getLocalName().equals("screens") || rootag.getLocalName().equals("forms")) {
+                            XmlTag[] xmltags = xmlFile.getRootTag().getSubTags();
+                            List<XmlTag> list = ContainerUtil.filter(xmltags, new Condition<XmlTag>() {
+                                @Override
+                                public boolean value(XmlTag xmlTag) {
+                                    return xmlTag.getLocalName().equals("screen") || xmlTag.getLocalName().equals("form");
+                                }
+                            });
+                            return ContainerUtil.find(list, new Condition<XmlTag>() {
+                                @Override
+                                public boolean value(XmlTag xmlTag) {
+                                    return componentUrl.getTag().trim().equals(xmlTag.getAttributeValue("name"));
+                                }
+                            });
+                        }
+
+                    } else {
+                        return psiFile;
                     }
 
-                } else {
-                    return psiFile;
                 }
-
             }
         }
         return null;
@@ -79,55 +100,67 @@ public class ViewMapReference extends PsiReferenceBase<XmlAttribute> {
         }
 
         ViewMap viewmap = (ViewMap) DomUtil.getDomElement(myElement.getParent());
-        String page = viewmap.getPage().getValue();
-        if (page != null) {
-            final ComponentUrl url = new ComponentUrl(page.trim());
-            //if (url.getTag() == null||url.getTag().equals("IntellijIdeaRulezzz")) {
-            ComponentManager manager = ComponentManager.getInstance(myElement.getProject());
-            final Component[] components = manager.getAllComponents();
-            if (url.getComponentName() != null) {
-                final Component component = manager.getComponent(url.getComponentName(), components);
-                if (component != null) {
-                    if (!url.isStartTag()) {
-                        List<String> list = ContainerUtil.map(component.getAllScreens(), new Function<Screen, String>() {
-                            @Override
-                            public String fun(Screen screen) {
-                                return url.buildComponentUrl(component,
-                                        screen.getXmlElement().getContainingFile().getVirtualFile().getPath(), "");
-                            }
-                        });
-                        return list.toArray();
-                    } else {
-                        List<Screens> screenss = OfbizUtils.getDomFileElements(Screens.class, myElement.getProject(), component.getScope());
-                        final Screens screens = ContainerUtil.find(screenss, new Condition<Screens>() {
-                            @Override
-                            public boolean value(Screens screens) {
-                                return url.getRelativePath(component, screens.getXmlElement().
-                                        getContainingFile().getVirtualFile().getPath()).equals(url.getRelativePath());
-                            }
-                        });
-                        if (screens != null) {
-                            return ContainerUtil.map(screens.getScreens(), new Function<Screen, Object>() {
+        if (localName.equals("page")) {
+            String page = viewmap.getPage().getValue();
+            if (page != null) {
+                final ComponentUrl url = new ComponentUrl(page.trim());
+                //if (url.getTag() == null||url.getTag().equals("IntellijIdeaRulezzz")) {
+                ComponentManager manager = ComponentManager.getInstance(myElement.getProject());
+                final Component[] components = manager.getAllComponents();
+                if (url.getComponentName() != null) {
+                    final Component component = manager.getComponent(url.getComponentName(), components);
+                    if (component != null) {
+                        if (!url.isStartTag()) {
+                            List<String> list = ContainerUtil.map(component.getAllScreens(), new Function<Screen, String>() {
                                 @Override
-                                public Object fun(Screen screen) {
-                                    String name = screen.getName().getValue();
-                                    String path = url.buildComponentUrl(component, screen.getXmlElement().getContainingFile().getVirtualFile().getPath(), name);
-                                    return LookupElementBuilder.create(path).setPresentableText(name);
+                                public String fun(Screen screen) {
+                                    return url.buildComponentUrl(component,
+                                            screen.getXmlElement().getContainingFile().getVirtualFile().getPath(), "");
                                 }
-                            }).toArray();
+                            });
+                            return list.toArray();
+                        } else {
+                            List<Screens> screenss = OfbizUtils.getDomFileElements(Screens.class, myElement.getProject(), component.getScope());
+                            final Screens screens = ContainerUtil.find(screenss, new Condition<Screens>() {
+                                @Override
+                                public boolean value(Screens screens) {
+                                    return url.getRelativePath(component, screens.getXmlElement().
+                                            getContainingFile().getVirtualFile().getPath()).equals(url.getRelativePath());
+                                }
+                            });
+                            if (screens != null) {
+                                return ContainerUtil.map(screens.getScreens(), new Function<Screen, Object>() {
+                                    @Override
+                                    public Object fun(Screen screen) {
+                                        String name = screen.getName().getValue();
+                                        String path = url.buildComponentUrl(component, screen.getXmlElement().getContainingFile().getVirtualFile().getPath(), name);
+                                        return LookupElementBuilder.create(path).setPresentableText(name);
+                                    }
+                                }).toArray();
+                            }
                         }
                     }
-                }
 
-            } else {
-                return ContainerUtil.map(components, new Function<Component, Object>() {
-                    @Override
-                    public Object fun(Component component) {
-                        String lookup = String.format("component://" + component.getName().getValue() + "/");
-                        return LookupElementBuilder.create(lookup).setPresentableText(component.getName().getValue());
-                    }
-                }).toArray();
+                } else {
+                    return ContainerUtil.map(components, new Function<Component, Object>() {
+                        @Override
+                        public Object fun(Component component) {
+                            String lookup = String.format("component://" + component.getName().getValue() + "/");
+                            return LookupElementBuilder.create(lookup).setPresentableText(component.getName().getValue());
+                        }
+                    }).toArray();
+                }
             }
+        } else if (localName.equals("type")) {
+            ControllerManager controllerManager = ControllerManager.getInstance(myElement.getProject());
+            Controller controller = controllerManager.getController((XmlFile) myElement.getContainingFile().getContainingFile());
+            Set<String> names = new HashSet<String>();
+            for (Handler handler : controller.getAllHandlers()) {
+                if (handler.getType().getStringValue().equals("view")) {
+                    names.add(handler.getName().getStringValue());
+                }
+            }
+            return names.toArray();
         }
 
 
