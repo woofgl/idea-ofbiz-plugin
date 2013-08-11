@@ -4,17 +4,18 @@ import com.intellij.util.xml.*;
 import org.jetbrains.annotations.NotNull;
 
 
-public interface Response extends DomElement {
-    @Attribute("value")
+public interface Handler extends DomElement {
+    @Attribute("class")
     @NameValue
     @Required(nonEmpty = true)
-    @Convert(ResponseValueConverter.class)
     @NotNull
-    GenericAttributeValue<String> getViewName();
+    GenericAttributeValue<String> getClassName();
+
     @Attribute("name")
     @NameValue
     @Required(nonEmpty = true)
     @NotNull
+
     GenericAttributeValue<String> getName();
     @Attribute("type")
     @NameValue

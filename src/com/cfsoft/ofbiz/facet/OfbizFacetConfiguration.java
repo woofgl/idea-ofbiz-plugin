@@ -93,9 +93,8 @@ public class OfbizFacetConfiguration implements FacetConfiguration, Modification
     public FacetEditorTab[] createEditorTabs(FacetEditorContext editorContext, FacetValidatorsManager facetValidatorsManager) {
         return new FacetEditorTab[]{
 //                new ControllerFileSetConfigurationTab(this, editorContext),
-//                new ServiceFileSetConfigurationTab(this, editorContext)
-//                new ComponentFileSetConfigurationTab(this, editorContext)
-//                ,
+//                new ServiceFileSetConfigurationTab(this, editorContext),
+//                new ComponentFileSetConfigurationTab(this, editorContext),
                 new DatabaseConfigurationTab(this, editorContext),
 //                new ViewTypeConfigurationTab(this, editorContext)
         };

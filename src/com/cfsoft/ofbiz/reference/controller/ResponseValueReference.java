@@ -27,21 +27,23 @@ public class ResponseValueReference extends PsiReferenceBase<XmlAttribute> {
         }
         Response response = (Response) DomUtil.getDomElement(myElement.getParent());
         Controller controller = ControllerManager.getInstance(myElement.getProject()).getController((XmlFile) myElement.getContainingFile());
-
-        if (response.getType().getStringValue().equals("request")) {
-            for (RequestMap requestMap : controller.getAllRequestMaps()) {
-                if (requestMap.getUri().getStringValue().equals(response.getViewName().getStringValue())) {
-                    return requestMap.getXmlElement();
+        //String localName = myElement.getLocalName();
+        //if(localName.equals("value")){
+            if (response.getType().getStringValue().equals("request")) {
+                for (RequestMap requestMap : controller.getAllRequestMaps()) {
+                    if (requestMap.getUri().getStringValue().equals(response.getViewName().getStringValue())) {
+                        return requestMap.getXmlElement();
+                    }
                 }
-            }
-        } else {
-            for (ViewMap viewMap : controller.getAllViewMaps()) {
-                if (viewMap.getName().getStringValue().equals(response.getViewName().getStringValue())) {
-                    return viewMap.getXmlElement();
+            } else {
+                for (ViewMap viewMap : controller.getAllViewMaps()) {
+                    if (viewMap.getName().getStringValue().equals(response.getViewName().getStringValue())) {
+                        return viewMap.getXmlElement();
+                    }
                 }
+                return myElement;
             }
-            return myElement;
-        }
+        //}
         return myElement;
 
     }

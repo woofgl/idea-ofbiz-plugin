@@ -3,7 +3,10 @@ package com.cfsoft.ofbiz;
 import com.cfsoft.ofbiz.dom.component.ComponentManager;
 import com.cfsoft.ofbiz.dom.component.ComponentUrl;
 import com.cfsoft.ofbiz.dom.component.api.Component;
+import com.cfsoft.ofbiz.dom.controller.api.Controller;
 import com.cfsoft.ofbiz.dom.controller.api.Event;
+import com.cfsoft.ofbiz.dom.controller.api.Handler;
+import com.cfsoft.ofbiz.dom.controller.model.ControllerManager;
 import com.cfsoft.ofbiz.dom.entity.api.Entity;
 import com.cfsoft.ofbiz.dom.entity.api.EntityModel;
 import com.cfsoft.ofbiz.dom.service.api.Service;
@@ -14,7 +17,6 @@ import com.cfsoft.ofbiz.dom.simplemethod.api.SimpleMethod;
 import com.cfsoft.ofbiz.dom.simplemethod.api.SimpleMethods;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.ide.highlighter.XmlFileType;
-
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
@@ -24,10 +26,13 @@ import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlElement;
+import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.Function;
-import com.intellij.util.ProcessingContext;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.xml.*;
+import com.intellij.util.xml.DomElement;
+import com.intellij.util.xml.DomFileElement;
+import com.intellij.util.xml.DomJavaUtil;
+import com.intellij.util.xml.DomService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -363,6 +368,31 @@ public class OfbizUtils {
             }
         }
         return null;
+    }
+
+    public static PsiElement getEventTypeElement(Event event) {
+        ControllerManager controllerManager = ControllerManager.getInstance(event.getXmlElement().getProject());
+        Controller controller = controllerManager.getController((XmlFile) event.getXmlElement().getContainingFile().getContainingFile());
+
+        for (Handler handler : controller.getAllHandlers()) {
+            if (handler.getName().equals(event.getType())) {
+                return handler.getXmlElement();
+            }
+        }
+        return null;
+    }
+
+    public static Set<String> getEventCompleteTypes(Event event, String type) {
+        ControllerManager controllerManager = ControllerManager.getInstance(event.getXmlElement().getProject());
+        Controller controller = controllerManager.getController((XmlFile) event.getXmlElement().getContainingFile().getContainingFile());
+        Set<String> names = new HashSet<String>();
+        for (Handler handler : controller.getAllHandlers()) {
+            if(handler.getType().equals(type)){
+                names.add(handler.getName().getStringValue());
+            }
+
+        }
+        return names;
     }
 
     public static class ModulePsiFileTypeScope extends GlobalSearchScope {

@@ -34,8 +34,14 @@ public class EventInvokeReference extends PsiReferenceBase<XmlAttribute> {
         }
         final Event event = (Event) DomUtil.getDomElement(myElement.getParent());
         PsiElement psiEle = OfbizUtils.getEventMethod(event);
+        String attrName =  myElement.getLocalName();
+
         if (psiEle == null) {
-            psiEle = OfbizUtils.getEventServiceElememnt(event);
+            if (attrName.equals("invoke")) {
+                psiEle = OfbizUtils.getEventServiceElememnt(event);
+            } else if(attrName.equals("type")){
+                psiEle = OfbizUtils.getEventTypeElement(event);
+            }
         }
         return psiEle == null ? myElement : psiEle;
     }
@@ -48,7 +54,14 @@ public class EventInvokeReference extends PsiReferenceBase<XmlAttribute> {
             return new Object[0];
         }
         Event event = (Event) DomUtil.getDomElement(myElement.getParent());
-        Set<String> set = OfbizUtils.getEventCompleteMethodNames(event);
+        Set<String> set = new HashSet<String>();
+        String attrName =  myElement.getLocalName();
+        if(attrName.equals("invoke")){
+            set= OfbizUtils.getEventCompleteMethodNames(event);
+        }else if (attrName.equals("type")) {
+            set= OfbizUtils.getEventCompleteTypes(event, "request");
+        }
+
         return set.size() == 0 ? OfbizUtils.getEventCompleteServiceNames(event).toArray() : set.toArray();
 
     }

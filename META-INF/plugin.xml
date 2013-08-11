@@ -5,7 +5,7 @@
     <vendor>www.cfsoft.com</vendor>
     <idea-version since-build="8000"/>
     <!-- required dependencies -->
-    <depends>com.intellij.javaee</depends>
+    <depends>com.intellij.modules.ultimate</depends>
 
     <application-components>
         <!-- Add your application components here -->
@@ -21,9 +21,10 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!--<errorHandler implementation="com.intellij.diagnostic.ITNReporter"/>-->
-        <iconProvider implementation="com.cfsoft.ofbiz.OfbizDomIconProvider"/>
+        <iconProvider implementation="com.cfsoft.ofbiz.OfbizIconProvider"/>
         <facetType implementation="com.cfsoft.ofbiz.facet.OfbizFacetType"/>
         <frameworkSupport implementation="com.cfsoft.ofbiz.facet.OfbizFrameworkSupportProvider"/>
+        <framework.detector implementation="com.cfsoft.ofbiz.facet.OfbizFrameworkDetector"/>
 
 
         <!--<defaultLiveTemplatesProvider implementation="com.cfsoft.ofbiz.OfbizDefaultLiveTemplatesProvider"/>-->
@@ -59,7 +60,8 @@
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.component.ComponentDomFileDescription"/>
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.fieldtype.FieldtypeModelDomFileDescription"/>
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.entity.EntityModelDomFileDescription"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.service.api.Service" implementationClass="com.cfsoft.ofbiz.dom.service.impl.ServiceImpl"/>
+        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.service.api.Service"
+                            implementationClass="com.cfsoft.ofbiz.dom.service.impl.ServiceImpl"/>
         <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.component.api.Component" implementationClass="com.cfsoft.ofbiz.dom.component.impl.ComponentImpl"/>
         <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.service.api.Service"
                             implementationClass="com.cfsoft.ofbiz.dom.service.impl.ServiceImpl"/>
@@ -75,6 +77,8 @@
                 implementation="com.cfsoft.ofbiz.reference.ControllerReferenceContributor"/>
         <psi.referenceContributor
                 implementation="com.cfsoft.ofbiz.reference.EntityReferenceContributor"/>
+        <psi.referenceContributor
+                implementation="com.cfsoft.ofbiz.reference.ScreenReferenceContributor"/>
 
         <standardResourceProvider implementation="com.cfsoft.ofbiz.OfbizResourceProvider"/>
 

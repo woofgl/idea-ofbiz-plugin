@@ -20,7 +20,7 @@ public class OfbizResourceProvider implements StandardResourceProvider {
     @Override
     public void registerResources(ResourceRegistrar resourceRegistrar) {
         addDTDResource("http://www.ofbiz.org/dtds","4", resourceRegistrar);
-        addDTDResource("http://ofbiz.apache.org/dtds","10", resourceRegistrar);
+        addDTDResource("http://ofbiz.apache.org/dtds","12", resourceRegistrar);
     }
 
     /**

@@ -10,4 +10,5 @@ public class Constants {
             "http://www.ofbiz.org/dtds/site-conf.xsd"
     };
     public static final String CONTROLLER_XML_DEFAULT_FILENAME = "controller.xml";
+    public static final String COMPONENT_XML_DEFAULT_FILENAME = "ofbiz-component.xml";
 }

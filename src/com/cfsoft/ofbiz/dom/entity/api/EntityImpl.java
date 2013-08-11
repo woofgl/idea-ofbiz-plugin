@@ -11,13 +11,6 @@ import com.intellij.xml.index.XmlTagNamesIndex;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Administrator
- * Date: 10/5/11
- * Time: 7:58 PM
- * To change this template use File | Settings | File Templates.
- */
 public abstract class EntityImpl implements Entity {
     @Override
     public List<Field> getAllFields() {

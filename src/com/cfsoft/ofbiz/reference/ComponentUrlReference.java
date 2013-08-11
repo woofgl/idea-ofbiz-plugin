@@ -89,7 +89,8 @@ public class ComponentUrlReference<T extends DomElement> extends PsiReferenceBas
                             return lookups;
                         } else {
                             List<T> list = OfbizUtils.getDomFileElements(clazz, myElement.getProject(),
-                                    GlobalSearchScope.directoryScope(myElement.getProject(), psiDir.getVirtualFile(), true));
+                                    GlobalSearchScope.allScope(myElement.getProject()));
+//                                    GlobalSearchScope.fileScope(myElement.getProject(), psiDir.getVirtualFile()));
                             Object[] lookups = ContainerUtil.map2Array(list, new Function<T, Object>() {
                                 @Override
                                 public Object fun(T psiElement) {

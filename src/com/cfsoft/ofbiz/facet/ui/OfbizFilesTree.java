@@ -16,7 +16,10 @@
 package com.cfsoft.ofbiz.facet.ui;
 
 
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.vfs.JarFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
@@ -65,7 +68,7 @@ public class OfbizFilesTree extends CheckboxTreeBase {
         final Object object = ((DefaultMutableTreeNode) value).getUserObject();
         if (object instanceof Module) {
           final Module module = (Module) object;
-          final Icon icon = module.getModuleType().getNodeIcon(expanded);
+          final Icon icon = ModuleType.get(module).getNodeIcon(expanded);
           renderer.setIcon(icon);
           final String moduleName = module.getName();
           renderer.append(moduleName, SimpleTextAttributes.REGULAR_ATTRIBUTES);
@@ -86,7 +89,7 @@ public class OfbizFilesTree extends CheckboxTreeBase {
           }
         } else if (object instanceof VirtualFile) {
           final VirtualFile file = (VirtualFile) object;
-          renderer.setIcon(file.getIcon());
+          renderer.setIcon(FileTypeManager.getInstance().getFileTypeByFile(file).getIcon());
           renderer.append(file.getName(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
           String path = file.getPath();
           final int i = path.indexOf(JarFileSystem.JAR_SEPARATOR);

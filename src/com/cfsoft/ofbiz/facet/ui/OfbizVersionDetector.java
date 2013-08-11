@@ -16,6 +16,7 @@
 package com.cfsoft.ofbiz.facet.ui;
 
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.vfs.JarFile;
 import com.intellij.openapi.vfs.JarFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaPsiFacade;
@@ -44,7 +45,7 @@ public class OfbizVersionDetector {
   @Nullable
   public static String detectStrutsVersion(@NotNull final Module module) {
     try {
-      final ZipFile zipFile = getStrutsJar(module);
+      final ZipFile zipFile = getStrutsJar(module).getZipFile();
       if (zipFile == null) {
         return null;
       }
@@ -64,7 +65,7 @@ public class OfbizVersionDetector {
   }
 
   @Nullable
-  private static ZipFile getStrutsJar(final Module module) throws IOException {
+  private static JarFile getStrutsJar(final Module module) throws IOException {
     final GlobalSearchScope scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, false);
     final JavaPsiFacade psiManager = JavaPsiFacade.getInstance(module.getProject());
 

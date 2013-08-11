@@ -4,10 +4,7 @@ import com.cfsoft.ofbiz.OfbizUtils;
 import com.cfsoft.ofbiz.dom.component.ComponentManager;
 import com.cfsoft.ofbiz.dom.component.ComponentUrl;
 import com.cfsoft.ofbiz.dom.component.api.Component;
-import com.cfsoft.ofbiz.dom.controller.api.Controller;
-import com.cfsoft.ofbiz.dom.controller.api.Include;
-import com.cfsoft.ofbiz.dom.controller.api.RequestMap;
-import com.cfsoft.ofbiz.dom.controller.api.ViewMap;
+import com.cfsoft.ofbiz.dom.controller.api.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -53,6 +50,20 @@ public abstract class ControllerImpl implements Controller {
         }
         viewMaps.addAll(getViewMaps());
         return viewMaps;
+    }
+    @Override
+    public List<Handler> getAllHandlers() {
+        List<Include> includes = getIncludes();
+        List<Handler> handlers = new ArrayList<Handler>();
+        final Project project = getXmlElement().getProject();
+        for (Include include : includes) {
+            Controller controller = getFromInclude(project, include);
+            if (controller != null) {
+                handlers.addAll(controller.getHandlers());
+            }
+        }
+        handlers.addAll(getHandlers());
+        return handlers;
     }
 
     private Controller getFromInclude(Project project, Include include) {

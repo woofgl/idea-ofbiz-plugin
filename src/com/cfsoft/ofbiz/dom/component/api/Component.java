@@ -1,6 +1,6 @@
 package com.cfsoft.ofbiz.dom.component.api;
 
-import com.cfsoft.ofbiz.OfbizDomIconProvider;
+import com.cfsoft.ofbiz.OfbizDomPresentationProvider;
 import com.cfsoft.ofbiz.dom.controller.api.Controller;
 import com.cfsoft.ofbiz.dom.entity.api.Entity;
 import com.cfsoft.ofbiz.dom.screen.api.Screen;
@@ -14,15 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Administrator
- * Date: 9/21/11
- * Time: 12:00 AM
- * To change this template use File | Settings | File Templates.
- */
+
 //@Namespace(Constants.CONTROLLER_NAMESPACE_KEY)
-@Presentation(typeName = "Component Root", iconProviderClass = OfbizDomIconProvider.class)
+@Presentation(typeName = "Component Root", provider = OfbizDomPresentationProvider.class)
 public interface Component extends DomElement {
     @NonNls
     String TAG_NAME = "ofbiz-component";

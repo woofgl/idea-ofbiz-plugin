@@ -343,7 +343,8 @@ public class ComponentFileSetConfigurationTab extends FacetEditorTab implements 
     ConfigFileNode(final VirtualFilePointer name, final SimpleNode parent) {
       super(parent);
       myFilePointer = name;
-      setIcons(OfbizIcons.COMPONENT_CONFIG_FILE, OfbizIcons.COMPONENT_CONFIG_FILE);
+      setIcon(OfbizIcons.COMPONENT_CONFIG_FILE);
+
     }
 
     public boolean isAlwaysLeaf() {
