@@ -3,6 +3,7 @@ package com.cfsoft.ofbiz.reference;
 import com.cfsoft.ofbiz.dom.service.api.Service;
 import com.cfsoft.ofbiz.reference.service.ServiceInvokeReference;
 import com.cfsoft.ofbiz.reference.service.ServiceLocationReference;
+import com.cfsoft.ofbiz.reference.service.ServiceReference;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.util.ProcessingContext;
@@ -35,11 +36,20 @@ public class ServiceReferenceContributor extends PsiReferenceContributor {
     };
 
     private void registerControllerXmlTags(final PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(xmlAttribute().withLocalName("invoke").
+/*        registrar.registerReferenceProvider(xmlAttribute().withLocalName("invoke").
                 withSuperParent(1, withDom(domElement(Service.class))),
                 serviceInvokeReferenceProvider);
         registrar.registerReferenceProvider(xmlAttribute().withLocalName("location").
                 withSuperParent(1, withDom(domElement(Service.class))),
-                serviceLocationReferenceProvider);
+                serviceLocationReferenceProvider);*/
+        registrar.registerReferenceProvider(xmlAttribute().
+                withSuperParent(1, withDom(domElement(Service.class))),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {
+                        return new PsiReference[]{new ServiceReference((XmlAttribute) psiElement)};
+                    }
+                });
     }
 }

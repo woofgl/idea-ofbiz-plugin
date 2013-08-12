@@ -14,7 +14,7 @@ public class OfbizResourceProvider implements StandardResourceProvider {
             "ofbiz-component.xsd", "ofbiz-containers.xsd", "ofbiz-properties.xsd",
             "regions.xsd", "security-config.xsd", "SeleniumXml.xsd", "service-config.xsd",
             "service-eca.xsd", "service-group.xsd", "service-mca.xsd",
-            "services.xsd", "simple-methods.xsd", "site-conf.xsd", "test-suite.xsd",
+            "services.xsd", "simple-methods.xsd","simple-methods-v2.xsd", "site-conf.xsd", "test-suite.xsd",
             "widget-form.xsd", "widget-menu.xsd", "widget-screen.xsd", "widget-tree.xsd"};
 
     @Override

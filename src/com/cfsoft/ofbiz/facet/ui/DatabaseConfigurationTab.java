@@ -48,7 +48,7 @@ public class DatabaseConfigurationTab extends FacetEditorTab {
 
     final Module module = editorContext.getModule();
     //final String version = OfbizVersionDetector.detectStrutsVersion(module);
-    final String[] databases = {"mysql","oracle","sybase","derby","mssql"};
+    final String[] databases = {"mysql","oracle","sybase","derby","mssql","postgres","postnew"};
       databaseComboBox.setModel(new DefaultComboBoxModel(databases));
       databaseComboBox.getModel().setSelectedItem(databases);
 //      databaseComboBox.setEnabled(false);
@@ -90,8 +90,9 @@ public class DatabaseConfigurationTab extends FacetEditorTab {
   public void disposeUIResources() {
   }
 
-  @Override
+/*  @Override
   public String getHelpTopic() {
+//    return "reference.settings.project.structure.facets.struts2.facet";
     return "reference.settings.project.structure.facets.struts2.facet";
-  }
+  }*/
 }

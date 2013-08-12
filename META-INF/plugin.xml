@@ -28,31 +28,12 @@
 
 
         <!--<defaultLiveTemplatesProvider implementation="com.cfsoft.ofbiz.OfbizDefaultLiveTemplatesProvider"/>-->
-        <!-- controller.xml -->
-        <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.controller.ControllerDomFileDescription"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.controller.api.Include"
-                            implementationClass="com.cfsoft.ofbiz.dom.controller.impl.IncludeImpl"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.controller.api.Controller"
-                            implementationClass="com.cfsoft.ofbiz.dom.controller.impl.ControllerImpl"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.controller.api.RequestMap"
-                            implementationClass="com.cfsoft.ofbiz.dom.controller.impl.RequestMapImpl"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.controller.api.ViewMap"
-                            implementationClass="com.cfsoft.ofbiz.dom.controller.impl.ViewMapImpl"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.controller.api.Event"
-                            implementationClass="com.cfsoft.ofbiz.dom.controller.impl.EventImpl"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.controller.api.Response"
-                            implementationClass="com.cfsoft.ofbiz.dom.controller.impl.ResponseImpl"/>
 
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.entity.api.MemberEntity"
-                            implementationClass="com.cfsoft.ofbiz.dom.entity.api.MemberEntityImpl"/>
-        <!--converter-->
-
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.entity.api.Entity"
-                            implementationClass="com.cfsoft.ofbiz.dom.entity.api.EntityImpl"/>
         <!--converter-->
         <dom.converter interfaceClass="com.cfsoft.ofbiz.dom.controller.api.ResponseValueConverter"
                        implementationClass="com.cfsoft.ofbiz.dom.controller.api.ResponseValueConverter"/>
-
+        <!--dom description-->
+        <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.controller.ControllerDomFileDescription"/>
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.screen.ScreensDomFileDescription"/>
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.service.ServiceDomFileDescription"/>
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.simplemethod.SimpleMethodDomFileDescription"/>
@@ -60,11 +41,19 @@
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.component.ComponentDomFileDescription"/>
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.fieldtype.FieldtypeModelDomFileDescription"/>
         <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.entity.EntityModelDomFileDescription"/>
+        <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.service.ServiceConfigDomFileDescription"/>
+        <dom.fileDescription implementation="com.cfsoft.ofbiz.dom.resouce.ResourceDomFileDescription"/>
+        <!--dom implement-->
+        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.controller.api.Controller"
+                            implementationClass="com.cfsoft.ofbiz.dom.controller.impl.ControllerImpl"/>
+        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.entity.api.MemberEntity"
+                            implementationClass="com.cfsoft.ofbiz.dom.entity.api.MemberEntityImpl"/>
+        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.entity.api.Entity"
+                            implementationClass="com.cfsoft.ofbiz.dom.entity.api.EntityImpl"/>
         <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.service.api.Service"
                             implementationClass="com.cfsoft.ofbiz.dom.service.impl.ServiceImpl"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.component.api.Component" implementationClass="com.cfsoft.ofbiz.dom.component.impl.ComponentImpl"/>
-        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.service.api.Service"
-                            implementationClass="com.cfsoft.ofbiz.dom.service.impl.ServiceImpl"/>
+        <dom.implementation interfaceClass="com.cfsoft.ofbiz.dom.component.api.Component"
+                            implementationClass="com.cfsoft.ofbiz.dom.component.impl.ComponentImpl"/>
 
         <!--gotoSymbol-->
         <gotoSymbolContributor implementation="com.cfsoft.ofbiz.gotosymbol.GoToViewMapSymbolProvider"/>

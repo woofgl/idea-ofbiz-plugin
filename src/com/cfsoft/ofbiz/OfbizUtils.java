@@ -20,6 +20,7 @@ import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.*;
@@ -431,6 +432,26 @@ public class OfbizUtils {
             list.add(ele.getRootElement());
         }
         return list;
+    }
+    public static <T extends DomElement> T findXmlElement(Class<T> clazz, Project project, GlobalSearchScope scope,
+                                                                            Condition<T> condition) {
+        List<T> list = new ArrayList<T>();
+        List<DomFileElement<T>> eles =
+                DomService.getInstance().getFileElements(clazz, project, scope);
+        for (DomFileElement<T> ele : eles) {
+            list.add(ele.getRootElement());
+        }
+        return ContainerUtil.find(list, condition);
+    }
+    public static <T extends DomElement, R extends Object> List<R> lookupXmlElement(Class<T> clazz, Project project, GlobalSearchScope scope,
+                                                                                    Function<T, R> func) {
+        List<T> list = new ArrayList<T>();
+        List<DomFileElement<T>> eles =
+                DomService.getInstance().getFileElements(clazz, project, scope);
+        for (DomFileElement<T> ele : eles) {
+            list.add(ele.getRootElement());
+        }
+        return ContainerUtil.map(list, func);
     }
 
     public static PsiFile findPsiFileByComponentUrl(@NotNull XmlElement xmlElement, @NotNull ComponentUrl url) {

@@ -6,13 +6,7 @@ import com.intellij.util.containers.ContainerUtil;
 
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Administrator
- * Date: 10/2/11
- * Time: 1:46 AM
- * To change this template use File | Settings | File Templates.
- */
+
 public abstract class MemberEntityImpl implements MemberEntity {
     @Override
     public Entity getEntity() {
