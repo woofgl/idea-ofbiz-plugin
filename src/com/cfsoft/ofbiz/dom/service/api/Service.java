@@ -25,6 +25,9 @@ public interface Service extends DomElement {
     @NameValue
     @NotNull
     GenericAttributeValue<String> getInvoke();
+    @Attribute("default-entity-name")
+    @NameValue
+    GenericAttributeValue<String> getDefaultEntityName();
 
 
 

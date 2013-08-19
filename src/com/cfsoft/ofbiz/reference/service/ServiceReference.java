@@ -1,6 +1,7 @@
 package com.cfsoft.ofbiz.reference.service;
 
 import com.cfsoft.ofbiz.OfbizUtils;
+import com.cfsoft.ofbiz.dom.entity.api.Entity;
 import com.cfsoft.ofbiz.dom.service.api.Engine;
 import com.cfsoft.ofbiz.dom.service.api.Service;
 import com.cfsoft.ofbiz.dom.service.api.ServiceConfig;
@@ -69,6 +70,10 @@ public class ServiceReference extends PsiReferenceBase<XmlAttribute> {
                 }
             });
             return engine == null ? null: engine.getXmlElement();
+        }else if (localName.equals("default-entity-name")){
+            String entityName = service.getDefaultEntityName().getStringValue();
+            Entity entity = OfbizUtils.findEntity(myElement.getProject(), entityName);
+            return entity==null?null:entity.getXmlElement();
         }
         return myElement;
     }

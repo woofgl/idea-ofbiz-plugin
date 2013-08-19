@@ -20,4 +20,5 @@ public class OfbizIcons {
     public static final Icon COMPONENT_CONFIG_FILE = IconLoader.findIcon("/resources/icons/component.png");
     public static final Icon ENTITY_CONFIG_FILE = IconLoader.findIcon("/resources/icons/funnel.png");;
     public static final Icon RESOURCE_FILE = IconLoader.findIcon("/resources/icons/message.png");
+    public static final Icon OFBIZ_VARIABLE =IconLoader.findIcon("/resources/icons/transform.png");
 }

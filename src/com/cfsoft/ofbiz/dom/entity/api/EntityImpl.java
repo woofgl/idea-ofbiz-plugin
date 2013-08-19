@@ -2,11 +2,7 @@ package com.cfsoft.ofbiz.dom.entity.api;
 
 import com.cfsoft.ofbiz.OfbizUtils;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.indexing.FileBasedIndex;
-import com.intellij.xml.index.XmlTagNamesIndex;
 
 import java.util.ArrayList;
 import java.util.List;

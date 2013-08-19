@@ -6,6 +6,8 @@
     <idea-version since-build="8000"/>
     <!-- required dependencies -->
     <depends>com.intellij.modules.ultimate</depends>
+    <depends optional="true" config-file="ofbiz-freemarker.xml">com.intellij.freemarker</depends>
+    <depends optional="true" config-file="ofbiz-groovy.xml">org.intellij.groovy</depends>
 
     <application-components>
         <!-- Add your application components here -->
@@ -20,6 +22,7 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!--<freemarker.globalVariableProvider implementation="com.cfsoft.ofbiz.freemarker.OfbizGlobalVariableProvider"/>-->
         <!--<errorHandler implementation="com.intellij.diagnostic.ITNReporter"/>-->
         <iconProvider implementation="com.cfsoft.ofbiz.OfbizIconProvider"/>
         <facetType implementation="com.cfsoft.ofbiz.facet.OfbizFacetType"/>
